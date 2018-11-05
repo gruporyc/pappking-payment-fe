@@ -1,0 +1,58 @@
+#macro(main_layout)
+<html>
+<head>
+    #include("templates/partials/head.vm")
+    <title>$texts.getString('page.title')</title>
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-light sticky-top flex-md-nowrap p-0 bg-light">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-white text-center" href="/">
+        <img src="/img/ppk_logo.png" alt="pappking logo" width="150"/>
+    </a>
+    <ul class="nav justify-content-end">
+        <li class="nav-item text-secondary">
+            <a class="nav-link text-secondary" id="about-us" href="#">$texts.getString('header.about-us')</a>
+        </li>
+        <li class="nav-item text-secondary">
+            <a class="nav-link text-secondary" id="support" href="#">$texts.getString('header.support')</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-secondary" data-toggle="dropdown" href="#" role="button"
+               aria-haspopup="true" aria-expanded="false">
+                #if($lang=='en')
+                <img src="/img/united-states.svg" alt="usa flag" width="20"/><span class="ml-2">$texts.getString('language.english')</span>
+                #end
+                #if($lang=='es')
+                <img src="/img/spain.svg" alt="spain flag" width="20"/><span class="ml-2">$texts.getString('language.spanish')</span>
+                #end
+            </a>
+            <div class="dropdown-menu">
+                #if($lang=='es')
+                <a class="#if($lang=='en')dropdown-item#{else}dropdown-item#end" href="$pathInfo?lang=en">
+                    <img src="/img/united-states.svg" alt="usa flag" width="20"/><span class="ml-2">$texts.getString('language.english')</span>
+                </a>
+                #end
+                #if($lang=='en')
+                <a class="#if($lang=='es')dropdown-item active#{else}dropdown-item#end" href="$pathInfo?lang=es">
+                    <img src="/img/spain.svg" alt="spain flag" width="20"/><span class="ml-2">$texts.getString('language.spanish')</span>
+                </a>
+                #end
+            </div>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid" id="mySidenav">
+    <div class="row">
+        <main role="main" class="col-md-12 ml-sm-auto col-lg-12 pt-3 px-4">
+            $!bodyContent
+        </main>
+    </div>
+</div>
+<div class="fixed-bottom text-muted text-center sticky-top py-1 bg-light text-small col-sm-12">
+    &copy; 2018-2019 R&C pappking.com
+</div>
+#include("templates/partials/footer.vm")
+</body>
+</html>
+#end

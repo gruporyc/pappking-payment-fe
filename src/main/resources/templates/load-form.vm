@@ -1,0 +1,151 @@
+#parse("templates/main_layout.vm")
+#@main_layout()
+
+<div class="container">
+    <div class="col-md-12 py-5 text-center">
+        <h2>$texts.getString('loads.title')</h2>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:#if($error==true) block #else none #end;" id="alertFail">
+        <strong>$texts.getString('error.message.title'): </strong> <span id="errorText">$texts.getString('error.message.text')</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="col-md-12 text-right small text-danger">
+        <h6>(*) $texts.getString('literal.required.fields')</h6>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <h4 class="mb-3">$texts.getString('loads.customer-data')</h4>
+            <form action="/payments/customer/$customerId" method="post" class="needs-validation" validated>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="personType">$texts.getString('loads.customer-type') <span class="text-danger">*</span></label>
+                        <select class="form-control" id="personType" name="personType" required>
+                            <option value="">$texts.getString('literal.select')</option>
+                            #foreach($ct in $customerTypes)
+                            #set ($personTypeLabel = 'person-type.' + $ct.toLowerCase() + '.label')
+                            <option value="$ct">$texts.getString($personTypeLabel)</option>
+                            #end
+                        </select>
+                        <div class="invalid-feedback">
+                            $texts.getString('error.client-type-required')
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="documentType">$texts.getString('loads.document-type') <span class="text-danger">*</span></label>
+                        <select class="form-control" id="documentType" name="documentType" required>
+                            <option value="">$texts.getString('literal.select')</option>
+                            #foreach($dt in $documentTypes)
+                            #set ($documentTypeLabel = 'document-type.' + $dt.toLowerCase() + '.label')
+                            <option value="$dt">$texts.getString($documentTypeLabel)</option>
+                            #end
+                        </select>
+                        <div class="invalid-feedback">
+                            $texts.getString('error.document-type-required')
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="id">$texts.getString('loads.document-number') <span class="text-danger">*</span></label>
+                        <input name="id" type="text" class="form-control" id="id" placeholder="" value="" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 mb-3" id="companyNameDiv" style="display:none">
+                        <label for="companyName">$texts.getString('loads.company-name') <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="companyName" name="companyName">
+                    </div>
+                    <div class="col-md-4 mb-3" id="naturalNameDiv">
+                        <label for="firstName">$texts.getString('loads.name') <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" required>
+                    </div>
+                    <div class="col-md-4 mb-3" id="naturalLastNameDiv">
+                        <label for="lastName">$texts.getString('loads.last-name') <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="email">$texts.getString('loads.email') <span class="text-danger">*</span></label>
+                        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" id="email" name="email" placeholder="you@example.com" value="" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="country">$texts.getString('loads.country') <span class="text-danger">*</span></label>
+                        <select class="custom-select d-block w-100" id="country" name="country" required>
+                            <option value="">$texts.getString('literal.select')</option>
+                            #foreach($c in $countries)
+                            #set ($countryLabel = 'country.' + $c.toLowerCase() + '.label')
+                            <option value="$c">$texts.getString($countryLabel)</option>
+                            #end
+                        </select>
+
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="state">$texts.getString('loads.province')</label>
+                        <input type="text" class="form-control" name="state" id="state" placeholder="">
+                        <div class="invalid-feedback">
+                            $texts.getString('error.province-required')
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="city">$texts.getString('loads.city')</label>
+                        <input type="text" class="form-control" name="city" id="city" required="true" placeholder="">
+                        <div class="invalid-feedback">
+                            $texts.getString('error.city-required')
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9 mb-3">
+                        <label for="address">$texts.getString('loads.address')</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" value="" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="zip">$texts.getString('loads.postal-code')</label>
+                        <input type="text" class="form-control" id="zip" name="zip" placeholder="">
+                        <div class="invalid-feedback">
+                            $texts.getString('error.postal-code-required')
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mb-3">$texts.getString('loads.payment-title')</h4>
+
+                <div class="d-block my-3">
+                    #foreach($pm in $paymentMethod)
+                    #set ($paymentMethodLabel = 'payment-method.' + $pm.toLowerCase() + '.label')
+                    <div class="custom-control custom-radio">
+                        <input id="$pm" name="paymentMethod" type="radio" class="custom-control-input" value="$pm" required>
+                        <label class="custom-control-label" for="$pm">$texts.getString($paymentMethodLabel)</label>
+                    </div>
+                    #end
+                </div>
+
+                #parse("templates/payment-methods/credit-card.vm")
+                #parse("templates/payment-methods/transfer.vm")
+
+                <div id="cash_balotoForm" style="display:none" class="my-3 paymentForm col-md-10 text-center"><img src="/img/baloto-logo.png" alt="baloto" width="200"/></div>
+                <div id="cash_efectyForm" style="display:none" class="my-3 paymentForm col-md-10 text-center"><img src="/img/efecty-logo.png" alt="efecty" width="200"/></div>
+
+                <div class="alert alert-secondary" role="alert">
+                    <h3>$texts.getString('loads.amount') <span class="text-danger">*</span></h3>
+                    <input type="text" class="form-control" id="amount" name="amount" placeholder="" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" required>
+                    <div class="invalid-feedback">
+                        $texts.getString('error.amount-required')
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <input type="submit" value="$texts.getString('loads.submit')" class="btn btn-warning btn-lg btn-block" name="processLoadSubmit" id="processLoadSubmit">
+            </form>
+        </div>
+    </div>
+</div>
+#end

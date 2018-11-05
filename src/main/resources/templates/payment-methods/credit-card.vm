@@ -1,0 +1,42 @@
+<div id="creditForm" style="display:none" class="paymentForm col-md-10">
+    <div class="col-md-12 text-right small text-danger">
+        <img src="/img/cards.png" alt="visa" width="300"/>
+    </div>
+    <div class="row">
+        <div class="col-md-5 mb-3">
+            <label for="cc-number">$texts.getString('credit-card.number.label') <span class="text-danger">*</span></label>
+            <input type="number" class="form-control cc-control" id="cc-number" name="cc-number">
+        </div>
+
+        <div class="col-md-5 mb-3">
+            <label for="cc-type">$texts.getString('credit-card.type.label') <span class="text-danger">*</span></label>
+            <select name="cc-type" id="cc-type" class="form-control cc-control">
+                <option value="">$texts.getString('literal.select')</option>
+                #foreach($cc in $creditCards)
+                #set ($creditCardLabel = 'credit-card.' + $cc.toLowerCase() + '.label')
+                <option value="$cc">$texts.getString($creditCardLabel)</option>
+                #end
+            </select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label for="cc-expiration">$texts.getString('credit-card.expiration.label') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control cc-control" id="cc-expiration" name="cc-expiration">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="cc-name">$texts.getString('credit-card.cardholder.label') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control cc-control" id="cc-name" name="cc-name">
+            <small class="text-muted">$texts.getString('credit-card.type.description')</small>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="cc-cvv">$texts.getString('credit-card.cvv.label') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control cc-control" id="cc-cvv" name="cc-cvv">
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <label for="cc-installments">$texts.getString('credit-card.installments.label') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control cc-control" id="cc-installments" name="cc-installments">
+        </div>
+    </div>
+</div>

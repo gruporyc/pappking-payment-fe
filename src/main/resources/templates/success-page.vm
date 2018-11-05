@@ -1,0 +1,20 @@
+#parse("templates/main_layout.vm")
+#@main_layout()
+
+<div class="container">
+    <div class="col-md-12 py-5 text-center">
+        <h2>$texts.getString('loads.title')</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1 text-center">
+            #set($title = 'loads.success.' + $status.toLowerCase() + '.title')
+            #set($message = 'loads.success.' + $status.toLowerCase() + '.message')
+            <h2 class="mb-3">$texts.getString($title)</h2>
+            <h3 class="mb-3">$texts.getString($message)</h3>
+            <!--<p><a href="#" name="closeWindow" id="closeWindow">$texts.getString('literal.close-window')</a></p>-->
+            <p><a href="#">$texts.getString('portal.redirect.message')</a></p>
+        </div>
+    </div>
+</div>
+#end

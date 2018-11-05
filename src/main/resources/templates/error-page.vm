@@ -1,0 +1,17 @@
+#parse("templates/main_layout.vm")
+#@main_layout()
+<link type="text/css" rel="stylesheet" href="/css/error-style.css" />
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+<div id="notfound">
+    <div class="notfound">
+        <div class="notfound-404"></div>
+        #set ($errorTitle = 'error.' + $errorCode + '.title')
+        #set ($errorSubTitle = 'error.' + $errorCode + '.subtitle')
+        #set ($errorDescription = 'error.' + $errorCode + '.description')
+        <h1>$texts.getString($errorTitle)</h1>
+        <h2>$texts.getString($errorSubTitle)</h2>
+        <p>$texts.getString($errorDescription)<a href="mailto:support@pappking.com" target="_top">support@pappking.com</a></p>
+        <p><a href="#">$texts.getString('portal.redirect.message')</a></p>
+    </div>
+</div>
+#end

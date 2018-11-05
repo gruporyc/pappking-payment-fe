@@ -1,0 +1,23 @@
+<div id="pseForm" style="display:none" class="paymentForm col-md-10">
+    <div class="col-md-12 text-center small text-danger my-4">
+        <img src="/img/pse-logo.png" alt="pse" width="150"/>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="phone">$texts.getString('literal.phone') <span class="text-danger">*</span></label>
+            <input type="number" class="form-control transfer-control" id="phone" name="phone">
+        </div>
+
+        <div class="col-md-8 mb-3">
+            <label for="bank">$texts.getString('transfer.banks.label') <span class="text-danger">*</span></label>
+            <select name="bank" id="bank" class="form-control transfer-control">
+                <option value="">$texts.getString('literal.select')</option>
+                #foreach($b in $banks)
+                #if($b.code != 0)
+                <option value="$b.code">$b.description</option>
+                #end
+                #end
+            </select>
+        </div>
+    </div>
+</div>
