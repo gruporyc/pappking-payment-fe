@@ -4,26 +4,26 @@ import co.ppk.handlers.ExceptionHandler;
 import co.ppk.handlers.LoadHandler;
 import co.ppk.services.impl.APIManagerImpl;
 import co.ppk.util.Filters;
+import co.ppk.util.PropertyManager;
 import co.ppk.util.RestTemplateHelper;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
 import spark.Service;
+import java.util.Properties;
 
 import static co.ppk.ModelEntry.withModel;
 import static co.ppk.Template.render;
-import static spark.Spark.exception;
 import static spark.Spark.notFound;
 
 public class Main {
-
     public static void main(String[] args) {
-        setupLoadsFe(Service.ignite(), 5004);
+        PropertyManager pm = new PropertyManager();
+        Properties instance = pm.getInstance();
+        setupLoadsFe(Service.ignite(), Integer.valueOf(instance.getProperty("APP_PORT")));
     }
 
     private static void setupLoadsFe(Service http, int port) {
         http.staticFiles.location("/public");
 
-        LoadHandler loadHandler = new LoadHandler(new APIManagerImpl(new RestTemplateHelper()));
+        LoadHandler loadHandler = new LoadHandler(new APIManagerImpl(new RestTemplateHelper(), new PropertyManager()));
 
         ExceptionHandler exceptionHandler = new ExceptionHandler();
 
