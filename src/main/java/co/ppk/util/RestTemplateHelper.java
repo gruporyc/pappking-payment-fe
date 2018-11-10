@@ -21,13 +21,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.TrustStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.net.ssl.SSLContext;
@@ -54,7 +51,7 @@ public final class RestTemplateHelper {
 	/* Custom Headers */
 	public static final String LANGUAGE_HEADER = "language";
 	public static final String PAYMENT_CLIENT_TOKEN = "payment-client-key";
-    public static final String PAYMENT_CLIENT_TOKEN_VALUE = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJhNzJjZmJjNi00Nzc0LTQ2NTAtODBjYy04ZjJhNDcxYmQ2ZDIiLCJpYXQiOjE1NDEzNTY3NTAsInN1YiI6IiIsImV4cCI6MTU3Mjg5Mjc1MH0.lY1V6Jh8cFbqLSHGgHjbEoWyKObg9dT7CNwxVqIlpOufD4DsodNHgp7Irvzfx6cPbOe_cHq2ZmYrgQWFvtQ98A";
+    public static final String PAYMENT_CLIENT_TOKEN_VALUE = new PropertyManager().getInstance().getProperty("MS_PAYMENTS_API_KEY");
 	/* session objects names */
 	public static final String CURRENT_USER_LOCALE = "language";
 	public static final String DEFAULT_USER_LOCALE = "es_CO";
