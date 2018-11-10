@@ -5,12 +5,14 @@ import co.ppk.dto.Bank;
 import co.ppk.dto.LoadDto;
 import co.ppk.dto.LoadRequestDto;
 import co.ppk.services.APIManager;
+import co.ppk.util.PropertyManager;
 import co.ppk.util.RestTemplateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Properties;
 
 
 @Component
@@ -18,70 +20,62 @@ public class APIManagerImpl implements APIManager {
 
 	@Autowired
 	private RestTemplateHelper client;
+	
+	private Properties pm;
 
-    private static final String MS_PAYMENTS_URL = "http://localhost:5001/api/v1/payment";
-    private static final String MS_PAYMENTS_CUSTOMER_TYPES = "/person-types";
-    private static final String MS_PAYMENTS_DOCUMENT_TYPES = "/document-types";
-    private static final String MS_PAYMENTS_COUNTRIES = "/countries";
-    private static final String MS_PAYMENTS_PAYMENT_METHOD = "/payment-methods";
-    private static final String MS_PAYMENTS_CREDIT_CARDS = "/credit-cards";
-    private static final String MS_PAYMENTS_CUSTOMER_BALANCE = "/balance/";
-    private static final String MS_PAYMENTS_LOAD = "/load";
+    /*TODO: For MS_PAYMENTS_GET_BANKS remove hardcodded country,, make it dynamic*/
 
-    /*TODO: Remove hardcodded country,, make it dynamic*/
-    private static final String MS_PAYMENTS_GET_BANKS = "/cash/banks/co";
-
-	public APIManagerImpl(RestTemplateHelper client) {
+	public APIManagerImpl(RestTemplateHelper client, PropertyManager pm) {
 		this.client = client;
-
+        this.pm = pm.getInstance();
 	}
 
     @Override
     public String[] getCustomerTypes() {
         ResponseEntity<String[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_CUSTOMER_TYPES, String[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_CUSTOMER_TYPES"), String[].class);
         return response.getBody();
     }
 
     @Override
     public String[] getDocumentTypes() {
         ResponseEntity<String[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_DOCUMENT_TYPES, String[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_DOCUMENT_TYPES"), String[].class);
         return response.getBody();
     }
 
     @Override
     public String[] getCountries() {
         ResponseEntity<String[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_COUNTRIES, String[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_COUNTRIES"), String[].class);
         return response.getBody();
     }
 
     @Override
     public String[] getPaymentMethod() {
         ResponseEntity<String[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_PAYMENT_METHOD, String[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_PAYMENT_METHOD"), String[].class);
         return response.getBody();
     }
 
     @Override
     public String[] getCreditCards() {
         ResponseEntity<String[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_CREDIT_CARDS, String[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_CREDIT_CARDS"), String[].class);
         return response.getBody();
     }
 
     @Override
     public Bank[] getBanks() {
         ResponseEntity<Bank[]> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_GET_BANKS, Bank[].class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_BANKS") + "/co", Bank[].class);
         return response.getBody();
     }
 
     @Override
     public BalanceDto getCustomerBalance(String customerId) {
 	    ResponseEntity<BalanceDto> response = client.processRequestGet(
-                MS_PAYMENTS_URL + MS_PAYMENTS_CUSTOMER_BALANCE + "/" + customerId, BalanceDto.class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_CUSTOMER_BALANCE") + "/" + customerId, BalanceDto.class);
         return response.getBody();
     }
 
@@ -119,7 +113,7 @@ public class APIManagerImpl implements APIManager {
             put("document_type", loadRequest.getDocumentType());
         }};
         ResponseEntity<LoadDto> response = client.processRequestPostObject(
-                MS_PAYMENTS_URL + MS_PAYMENTS_LOAD, load, LoadDto.class);
+                pm.getProperty("MS_PAYMENTS_URL") + pm.getProperty("MS_PAYMENTS_LOAD"), load, LoadDto.class);
         return response.getBody();
     }
 }
